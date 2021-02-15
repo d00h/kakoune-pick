@@ -3,7 +3,10 @@ provide-module pick-file %{
     declare-option str pick_file_find "fd --no-ignore-vcs --type file | sort"
 
     define-command -docstring %{
-        } pick-file -params 0.. %{
+        find file and jump
+
+        usage: pick-file filter
+         } pick-file -params 0.. %{
         evaluate-commands %sh{
             set -o noglob
             output=$(mktemp -d -t kak-temp-XXXXXXXX)/fifo

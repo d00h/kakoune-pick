@@ -9,6 +9,9 @@ provide-module pick-kakoune %{
 
     define-command -docstring %{
         Find kakoune scripts and execute its
+        editor sessions for example
+
+        usage: pick-kakoune filter
     } pick-kakoune -params .. %{
         evaluate-commands %sh{
             set -o noglob
