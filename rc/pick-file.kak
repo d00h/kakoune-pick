@@ -1,6 +1,6 @@
 provide-module pick-file %{
     require-module pick-base
-    declare-option str pick_file_find "fd --no-ignore-vcs --type file | sort"
+    declare-option str pick_file_find "fd --no-ignore-vcs --type file  --exclude *.pyc | sort"
 
     define-command -docstring %{
         find file and jump
@@ -16,6 +16,7 @@ provide-module pick-file %{
             echo "
                 set-register '/' %val{bufname} 
                 edit! -readonly -fifo ${output} *pick-file* 10
+                hook -once global WinDisplay .* %{ try %{ delete-buffer! *pick-file* } }
                 set-option buffer filetype grep
                 hook buffer NormalKey <ret> pick-file-jump
                 hook buffer BufCloseFifo .* %{
