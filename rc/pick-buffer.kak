@@ -1,24 +1,28 @@
-provide-module pick-file %{
+provide-module pick-buffer %{
     require-module pick-base
-    declare-option str pick_file_find "fd --no-ignore-vcs --type file  --exclude *.pyc | sort"
+
+    define-command -hidden list-buffers-jump %{
+        execute-keys '<a-x>s([^\n\r]+)<ret>'
+        buffer "%reg{1}"
+    }
 
     define-command -docstring %{
-        find file and jump
+        find buffer and jump
 
-        usage: list-files filter
-         } list-files -params 0.. %{
+        usage: list-buffers filter
+         } list-buffers -params 0.. %{
         evaluate-commands %sh{
             set -o noglob
             output=$(mktemp -d -t kak-temp-XXXXXXXX)/fifo
             mkfifo ${output}
-            ( ${kak_opt_pick_file_find} . | \
+            ( echo ${kak_buflist} | tr " " "\n" | sort |  \
               ${kak_opt_pick_filter} "$*" > ${output} 2>&1 & ) > /dev/null 2>&1 < /dev/null
             echo "
                 set-register '/' %val{bufname} 
-                edit! -readonly -fifo ${output} *files* 10
-                hook -once global WinDisplay .* %{ try %{ delete-buffer! *files* } }
+                edit! -readonly -fifo ${output} *buffers*
+                hook -once global WinDisplay .* %{ try %{ delete-buffer! *buffers* } }
                 set-option buffer filetype grep
-                hook buffer NormalKey <ret> pick-file-jump
+                hook buffer NormalKey <ret> list-buffers-jump
                 hook buffer BufCloseFifo .* %{
                     execute-keys -client ${kak_client} n
                 }

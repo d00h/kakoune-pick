@@ -2,7 +2,7 @@ provide-module pick-kakoune %{
     require-module pick-base
     declare-option str pick_kakoune_find "fd --no-ignore-vcs --type file --extension kak"
 
-    define-command -hidden pick-kakoune-jump %{
+    define-command -hidden list-kakoune-jump %{
         execute-keys '<a-x>s([^\n\r]+)<ret>'
         source %reg{1}
     }
@@ -11,8 +11,8 @@ provide-module pick-kakoune %{
         Find kakoune scripts and execute its
         editor sessions for example
 
-        usage: pick-kakoune filter
-    } pick-kakoune -params .. %{
+        usage: list-kakoune filter
+    } list-kakoune -params .. %{
         evaluate-commands %sh{
             set -o noglob
             output=$(mktemp -d -t kak-temp-XXXXXXXX)/fifo
