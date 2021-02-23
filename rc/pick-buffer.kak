@@ -20,11 +20,13 @@ provide-module pick-buffer %{
             echo "
                 set-register '/' %val{bufname} 
                 edit! -readonly -fifo ${output} *buffers*
+                pick-highlight-hook
                 hook -once global WinDisplay .* %{ try %{ delete-buffer! *buffers* } }
                 set-option buffer filetype grep
                 hook buffer NormalKey <ret> list-buffers-jump
                 hook buffer BufCloseFifo .* %{
                     execute-keys -client ${kak_client} n
+                    evaluate-commands -client ${kak_client} pick-highlight-line
                 }
                 hook buffer BufClose .* %{ nop %sh{ rm -r $(dirname ${output})} }"
         }

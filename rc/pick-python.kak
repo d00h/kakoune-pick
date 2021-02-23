@@ -15,6 +15,8 @@ provide-module pick-python  %{
             ( python "${kak_opt_pick_python_script%.*}.py" grep ${target} . | \
               ${kak_opt_pick_filter} "$*" > ${output} 2>&1 & ) > /dev/null 2>&1 < /dev/null
             echo "edit! -readonly -fifo ${output} *python*
+               pick-highlight-hook
+               pick-highlight-line
                hook -once global WinDisplay .* %{ try %{ delete-buffer! *python* } }
                set-option buffer filetype grep
                hook buffer NormalKey <ret> pick-error-jump
