@@ -19,11 +19,11 @@ provide-module pick-kakoune %{
             mkfifo ${output}
             ( ${kak_opt_pick_kakoune_find} . | \
               ${kak_opt_pick_filter} "$*" > ${output} 2>&1 & ) > /dev/null 2>&1 < /dev/null
-            echo "edit! -readonly -fifo ${output} *pick-kakoune*
+            echo "edit! -readonly -fifo ${output} '*kakoune*'
                pick-highlight-hook
-               hook -once global WinDisplay .* %{ try %{ delete-buffer! *pick-kakoune* } }
+               hook -once global WinDisplay .* %{ try %{ delete-buffer! '*kakoune*' } }
                set-option buffer filetype grep
-               hook buffer NormalKey <ret> pick-kakoune-jump 
+               hook buffer NormalKey <ret> list-kakoune-jump 
                hook buffer BufClose .* %{ nop %sh{ rm -r $(dirname ${output})} }"
         }
     }

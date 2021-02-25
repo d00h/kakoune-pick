@@ -15,9 +15,10 @@ provide-module pick-file %{
               ${kak_opt_pick_filter} "$*" > ${output} 2>&1 & ) > /dev/null 2>&1 < /dev/null
             echo "
                 set-register '/' %val{bufname} 
-                edit! -readonly -fifo ${output} *files*
+                edit! -readonly -fifo ${output} '*files*'
                 pick-highlight-hook
-                hook -once global WinDisplay .* %{ try %{ delete-buffer! *files* } }
+                hook -once global WinDisplay .* %{ try %{ delete-buffer! '*files*' } }
+
                 set-option buffer filetype grep
                 hook buffer NormalKey <ret> pick-file-jump
                 hook buffer BufCloseFifo .* %{

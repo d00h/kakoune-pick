@@ -1,5 +1,5 @@
 provide-module pick-base %{
-    declare-option str pick_filter "fzf --tiebreak index +i --filter"
+   declare-option str pick_filter "fzf --tiebreak index +i --filter"
 
    define-command -hidden pick-highlight-line %{
         add-highlighter -override "buffer/pick-line" line %val{cursor_line} PrimarySelection
