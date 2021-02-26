@@ -25,7 +25,8 @@ provide-module -override dh-file-browser %{
 
     define-command -override -hidden file-browser-refresh %{
         echo %opt{file_browser_target}
-        add-highlighter -override "buffer/file-browser-refresh" line %val{cursor_line} PrimarySelection
+        add-highlighter -override "buffer/file-browser-cursor" line %val{cursor_line} PrimarySelection
+        add-highlighter -override "buffer/file-browser-folder" regex ^[^/]+/[^\n]* 0:type
     }
     
     define-command -override -hidden file-browser-select-up %{
