@@ -23,7 +23,26 @@ quick pick
 ![FindFileExample](https://raw.githubusercontent.com/d00h/kakoune-pick/master/docs/find-file-example.gif)
 
 * find-buffer
- 
+
+
+* find-action
+
+run command
+
+```shell
+# my project .kakrc
+
+clear-actions
+add-action open-admin %{ nop %sh{ xdg-open http://127.0.0.1:5600/admin } }
+add-action deploy %{ make deploy }
+add-action "run: tests" %{ make tests }
+
+add-action "find: routes" %{ list-python routes ./api }
+```
+
+
+![FindActionExample](https://raw.githubusercontent.com/d00h/kakoune-pick/master/docs/find-action-example.gif)
+
 # Install
 
 add to kakrc
@@ -34,11 +53,15 @@ plug "d00h/kakoune-pick" config %{
     require-module dh-file-browser # add command file-browser
     require-module dh-find-buffer  # add command find-buffer
     require-module dh-find-file    # add command find-file
+    require-module dh-find-action  # add command find-action, add-action, clear-actions
     
     alias global find find-file
     map global normal <F2> ": find-buffer<ret>"
     map global normal <F3> ": file-browser<ret>"
 
+    map global normal <F5> ": find-action<ret>"
+    add-action run %{ make run }
+    add-action test %{ echo "hello from action" }
 }
 ```
 
