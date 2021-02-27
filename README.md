@@ -1,6 +1,7 @@
 # Description
 
-plugin for [Kakoune editor](https://kakoune.org/) 
+plugins for [Kakoune editor](https://kakoune.org/) 
+
 quick pick
 
 * file
@@ -10,26 +11,33 @@ quick pick
 * python function with decorator @route
 * python function with decorator @fixture
 * python function with name like test_
+* 
+# Commands
 
-![PickFileExample](https://raw.githubusercontent.com/d00h/kakoune-pick/master/docs/pick-file-example.gif)
+* file-browser
 
+![FileBrowserExample](https://raw.githubusercontent.com/d00h/kakoune-pick/master/docs/file-browser-example.gif)
+
+* find-file 
+
+![FindFileExample](https://raw.githubusercontent.com/d00h/kakoune-pick/master/docs/find-file-example.gif)
+
+* find-buffer
+ 
 # Install
 
 add to kakrc
 
 ```shell
 plug "d00h/kakoune-pick" config %{
-    require-module pick-file
-    require-module pick-kakoune
-    require-module pick-python
 
-#   alias global ls pick-file
-#   alias global sessions pick-kakoune
-
-#   alias global tags     pick-python-tags
-#   alias global tests    pick-python-tests
-#   alias global routes   pick-python-routes
-#   alias global fixture  pick-python-fixtures
+    require-module dh-file-browser # add command file-browser
+    require-module dh-find-buffer  # add command find-buffer
+    require-module dh-find-file    # add command find-file
+    
+    alias global find find-file
+    map global normal <F2> ": find-buffer<ret>"
+    map global normal <F3> ": file-browser<ret>"
 
 }
 ```
