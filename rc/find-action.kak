@@ -1,4 +1,5 @@
 provide-module dh-find-action %{
+    declare-option -hidden int find_action_pos 1
     declare-option str-to-str-map find_action_config
 
     define-command -override -docstring %{
@@ -12,6 +13,7 @@ provide-module dh-find-action %{
     } clear-actions -params 0 %{ set-option global find_action_config }
 
     define-command -override -hidden find-action-run %{
+        set-option global find_action_pos %val{cursor_line}
         execute-keys '<a-x>s([^\n\r]+)<ret>'
         evaluate-commands %sh{
             eval "set -- $kak_quoted_opt_find_action_config"
@@ -26,6 +28,11 @@ provide-module dh-find-action %{
         }
         try %{ delete-buffer! "*actions*" }
     }
+
+    define-command -override -hidden find-action-restore-pos %{
+        execute-keys %opt{find_action_pos}g
+        find-action-refresh
+     }
 
     define-command -override -hidden find-action-refresh %{
         add-highlighter -override "buffer/find-action-cursor" line %val{cursor_line} PrimarySelection
@@ -50,14 +57,17 @@ provide-module dh-find-action %{
                 done;
             ) | sort -i > ${output} 2>&1 & ) > /dev/null 2>&1 < /dev/null
             echo "
-                edit! -readonly -fifo ${output} '*actions*'
+                edit! -readonly -fifo ${output} '*actions*' 
                 set-option buffer filetype grep
-                find-action-refresh
                 hook buffer RawKey .* %{ find-action-refresh }
                 hook -once global WinDisplay .* %{ try %{ delete-buffer! '*actions*' } }
                 hook buffer NormalKey <ret> find-action-run
-                hook buffer BufClose .* %{ nop %sh{ rm -r $(dirname ${output})} }"
-        }
+                hook buffer BufClose .* %{ nop %sh{ rm -r $(dirname ${output})} }
+                hook buffer BufCloseFifo .* %{
+                    evaluate-commands -client ${kak_client} find-action-restore-pos
+                }
+           "
+         }
     }
 }
 
