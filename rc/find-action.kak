@@ -55,7 +55,7 @@ provide-module dh-find-action %{
                     echo ${name}
                     shift
                 done;
-            ) | sort -i > ${output} 2>&1 & ) > /dev/null 2>&1 < /dev/null
+            ) > ${output} 2>&1 & ) > /dev/null 2>&1 < /dev/null
             echo "
                 edit! -readonly -fifo ${output} '*actions*' 
                 set-option buffer filetype grep
