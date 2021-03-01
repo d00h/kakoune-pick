@@ -59,6 +59,7 @@ provide-module -override dh-file-browser %{
                     hook -once buffer BufClose .* %{ nop %sh{ rm -r $(dirname ${output})} }
                     map buffer normal <ret> ': file-browser-select-up<ret>'
                     map buffer normal l ': file-browser-select-up<ret>'
+                    map buffer normal e ': file-browser-select-up<ret>'
                     map buffer normal h ': file-browser-select-down<ret>'
                 "
             elif [ -f "${target}" ]; then
