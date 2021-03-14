@@ -15,7 +15,8 @@ provide-module dh-find-action %{
     define-command -override -hidden find-action-run %{
         set-option global find_action_pos %val{cursor_line}
         execute-keys '<a-x>s([^\n\r]+)<ret>'
-        evaluate-commands %sh{
+        evaluate-commands -client %val{client} %sh{
+            echo delete-buffer! "*actions*"
             eval "set -- $kak_quoted_opt_find_action_config"
             while [ $# -gt 0 ]; do
                 name=${1%%=*}
@@ -26,7 +27,6 @@ provide-module dh-find-action %{
                 shift
             done;
         }
-        try %{ delete-buffer! "*actions*" }
     }
 
     define-command -override -hidden find-action-restore-pos %{
